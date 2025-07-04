@@ -3,7 +3,7 @@
 [![CI](https://github.com/zhengxii921/covmapy/actions/workflows/ci.yml/badge.svg)](https://github.com/zhengxii921/covmapy/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/zhengxii921/covmapy/branch/main/graph/badge.svg)](https://codecov.io/gh/zhengxii921/covmapy)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/zhengxii921/covmapy?utm_source=oss&utm_medium=github&utm_campaign=zhengxii921%2Fcovmapy&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
 
 A Python CLI tool that visualizes test coverage data as interactive treemap charts.
@@ -62,4 +62,4 @@ covmapy coverage.xml --output coverage-report.html
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
