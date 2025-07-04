@@ -257,6 +257,37 @@ class TestXMLCoverageParser:
         result = parser._find_common_root(["src/module.py"])
         assert result == "src"
 
+    def test_find_common_root_no_common_path_at_start(self, parser: XMLCoverageParser) -> None:
+        """Test finding common root when files have no common path from the start."""
+        # This should ensure the `if not common_parts:` branch is covered
+        result = parser._find_common_root(["file1.py", "file2.py"])
+        assert result == ""
+
+        # Another case with different first level directories
+        result = parser._find_common_root(["apple/test.py", "banana/test.py"])
+        assert result == ""
+
+        # Edge case: files at root level (no directory parts)
+        # This should ensure min_parts=1 but paths have only 1 part, forcing loop to run with i=0
+        # and different first parts should make common_parts empty
+        result = parser._find_common_root(["a.py", "b.py", "c.py"])
+        assert result == ""
+
+    def test_find_common_root_empty_paths_edge_case(self, parser: XMLCoverageParser) -> None:
+        """Test edge case to ensure coverage of specific branch conditions."""
+        # Test case that should hit the specific branch: 167->177
+        # This creates a scenario where min_parts > 0, but first comparison fails
+        result = parser._find_common_root(["x.py", "y.py"])
+        assert result == ""
+
+        # Another edge case with very different first elements
+        result = parser._find_common_root(["aaaa.py", "bbbb.py"])
+        assert result == ""
+
+        # Edge case: Empty paths should make min_parts = 0, testing the direct path from for to if
+        result = parser._find_common_root(["", ""])
+        assert result == ""
+
     @pytest.mark.parametrize(
         "filepaths,expected",
         [
@@ -265,6 +296,10 @@ class TestXMLCoverageParser:
             (["src/module1.py", "tests/test1.py"], ""),
             (["a/b/c/d.py", "a/b/e/f.py"], str(Path("a/b"))),
             (["/abs/path/file.py", "/abs/path/other.py"], str(Path("/abs/path"))),
+            # Additional test cases for edge cases that might not be covered
+            (["module1.py", "module2.py"], ""),
+            (["a.py", "b.py"], ""),
+            (["foo/bar.py", "baz/qux.py"], ""),
         ],
     )
     def test_find_common_root_multiple_files(

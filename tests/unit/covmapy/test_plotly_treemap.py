@@ -1,5 +1,7 @@
 """Unit tests for Plotly treemap layout module."""
 
+from unittest.mock import Mock
+
 import plotly.graph_objects as go  # type: ignore[import-untyped]
 import pytest
 
@@ -267,6 +269,68 @@ class TestPlotlyTreemapLayout:
         assert data.values[0] == 1  # Default value for empty directory
         assert data.colors[0] == 0  # Default color for empty directory
         assert data.text_info[0] == "empty<br>Directory"
+
+    def test_add_node_directory_node_empty_coverage_check(self, layout: PlotlyTreemapLayout) -> None:
+        """Test _add_node with empty DirectoryNode to ensure coverage of empty directory branch."""
+        data = TreemapData()
+        # Create explicitly empty directory with no children
+        directory = DirectoryNode(name="empty_dir", path="empty_dir", children=[])
+
+        # Verify the directory has no total lines
+        assert directory.total_lines == 0
+
+        layout._add_node(directory, data)
+
+        # Verify the empty directory branch is taken
+        assert len(data.ids) == 1
+        assert data.ids[0] == "empty_dir"
+        assert data.values[0] == 1  # PlotlyConfig.EMPTY_DIRECTORY_VALUE
+        assert data.colors[0] == 0  # PlotlyConfig.EMPTY_DIRECTORY_COLOR
+        assert data.text_info[0] == "empty_dir<br>Directory"
+
+    def test_add_node_directory_node_zero_lines_explicit(self, layout: PlotlyTreemapLayout) -> None:
+        """Test _add_node with DirectoryNode that explicitly has zero total_lines."""
+        data = TreemapData()
+        # Create an empty directory that should have total_lines = 0
+        directory = DirectoryNode(name="zero_lines", path="zero_lines", children=[])
+
+        # Ensure this directory has no children and therefore total_lines = 0
+        assert len(directory.children) == 0
+        assert directory.total_lines == 0
+
+        layout._add_node(directory, data)
+
+        # Check that the else branch (node.total_lines == 0) was taken
+        assert len(data.ids) == 1
+        assert data.ids[0] == "zero_lines"
+        assert data.values[0] == 1  # PlotlyConfig.EMPTY_DIRECTORY_VALUE
+        assert data.colors[0] == 0  # PlotlyConfig.EMPTY_DIRECTORY_COLOR
+        assert data.text_info[0] == "zero_lines<br>Directory"
+
+    def test_add_node_with_invalid_node_type(self, layout: PlotlyTreemapLayout) -> None:
+        """Test _add_node with node that is neither FileNode nor DirectoryNode."""
+
+        data = TreemapData()
+        # Create a mock object that is neither FileNode nor DirectoryNode
+        invalid_node = Mock()
+        invalid_node.name = "invalid"
+
+        # This should test the case where neither isinstance condition is true
+        # and the function should exit without doing anything
+        layout._add_node(invalid_node, data)
+
+        # Basic data should be added but no type-specific values/colors/text_info
+        assert len(data.ids) == 1
+        assert data.ids[0] == "invalid"
+        assert len(data.labels) == 1
+        assert data.labels[0] == "invalid"
+        assert len(data.parents) == 1
+        assert data.parents[0] == ""
+
+        # Type-specific data should not be added
+        assert len(data.values) == 0
+        assert len(data.colors) == 0
+        assert len(data.text_info) == 0
 
     def test_add_node_with_parent_id(self, layout: PlotlyTreemapLayout) -> None:
         """Test _add_node with parent ID."""
