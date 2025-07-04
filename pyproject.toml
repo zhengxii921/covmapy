@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Coverage visualization tool that generates interactive treemaps"
 readme = "README.md"
 requires-python = ">=3.9"
-license = {text = "Apache-2.0"}
+license = {text = "MIT"}
 authors = []
 dependencies = [
     "click>=8.0,<9.0",
