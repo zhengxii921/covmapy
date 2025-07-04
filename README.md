@@ -1,5 +1,10 @@
 # covmapy
 
+[![CI](https://github.com/zhengxii921/covmapy/actions/workflows/ci.yml/badge.svg)](https://github.com/zhengxii921/covmapy/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/zhengxii921/covmapy/branch/main/graph/badge.svg)](https://codecov.io/gh/zhengxii921/covmapy)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 A Python CLI tool that visualizes test coverage data as interactive treemap charts.
 
 ## Features
