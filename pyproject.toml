@@ -103,6 +103,18 @@ deps =
     pytest-mock>=3.14.1
 commands = pytest
 
+[testenv:integration]
+deps = {[testenv]deps}
+    # Make `uv` available in the venv so the script doesn't rely on a
+    # host-level install.
+    uv>=0.1
+allowlist_externals =
+    bash
+    ./scripts/integration_test.sh
+commands =
+    pytest
+    bash ./scripts/integration_test.sh
+
 [testenv:py39]
 basepython = python3.9
 

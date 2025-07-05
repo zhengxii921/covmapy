@@ -36,6 +36,13 @@ jobs:
         uv run tox -e py$(echo ${{ matrix.python-version }} | tr -d '.')
       shell: bash
 
+    - name: Run integration tests
+      run: |
+        PY_BIN_DIR="$(uv python find ${{ matrix.python-version }} | xargs dirname)"
+        export PATH="$PY_BIN_DIR:$PATH"
+        uv run tox -e integration
+      shell: bash
+
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.9' && matrix.os == 'ubuntu-latest'
       uses: codecov/codecov-action@v5
