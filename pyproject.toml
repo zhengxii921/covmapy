@@ -1,6 +1,6 @@
 [project]
 name = "covmapy"
-version = "0.1.0"
+version = "0.2.0"
 description = "Coverage visualization tool that generates interactive treemaps"
 readme = "README.md"
 requires-python = ">=3.9"
